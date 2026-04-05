@@ -1,0 +1,19 @@
+# Environments
+.venv/
+.env
+
+# Python Caches
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Data & Models (Protecting client privacy)
+data/*
+models/*
+!data/.gitkeep
+!models/.gitkeep
+
+# OS specific
+.DS_Store
