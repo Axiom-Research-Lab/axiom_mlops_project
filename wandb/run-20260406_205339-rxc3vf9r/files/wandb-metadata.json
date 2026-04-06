@@ -1,0 +1,29 @@
+{
+  "os": "macOS-26.4-arm64-arm-64bit-Mach-O",
+  "python": "CPython 3.13.12",
+  "startedAt": "2026-04-06T18:53:39.736858Z",
+  "program": "/Users/ellenpeterson/Desktop/axiom_mlops_project/src/axiom_mlops_project/main.py",
+  "codePath": "src/axiom_mlops_project/main.py",
+  "codePathLocal": "src/axiom_mlops_project/main.py",
+  "git": {
+    "remote": "https://github.com/shailoh-a11y/axiom_mlops_project.git",
+    "commit": "99a06be507cb961e8312cf99c28b612fcd357066"
+  },
+  "email": "shailoh@axiomresearchlab.io",
+  "root": "/Users/ellenpeterson/Desktop/axiom_mlops_project",
+  "host": "m-TalentCru-EllP.local",
+  "executable": "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/bin/python3",
+  "cpu_count": 8,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "494384795648",
+      "used": "271401193472"
+    }
+  },
+  "memory": {
+    "total": "17179869184"
+  },
+  "apple": {},
+  "writerId": "20dgb9cw9fwebkgy1ivdmxck8dy5sv3g"
+}

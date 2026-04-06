@@ -1,0 +1,12 @@
+.venv/
+.git/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# Axiom-Specific Ignores
+wandb/              # W&B temporary cloud syncing files
+mlruns/             # Leftover MLflow folders
+__pycache__/        # Python compiled bytecode
+*.joblib            # Local model files (we want the cloud version to be the source of truth)
+.env                # Any local environment variables/secrets

@@ -51,7 +51,14 @@ class FundingPredictor:
     """Refined MLOps engine using Design Patterns."""
 
     def __init__(self, config: ModelConfig = RandomForestConfig()) -> None:
-        self.base_dir = Path(__file__).resolve().parent.parent
+        # AXIOM FIX: Resolve path to project root.
+        # In the new src/axiom_mlops_project/main.py layout, the root is 2 levels up.
+        self.base_dir = Path(__file__).resolve().parents[2]
+
+        # DOCKER OVERRIDE: If running in a container, force the base to /app
+        if Path("/app/data").exists():
+            self.base_dir = Path("/app")
+
         self.data_path = self.base_dir / "data" / "funding_data.csv"
         self.model_path = self.base_dir / "models" / "funding_model.joblib"
         self.features_path = self.base_dir / "models" / "model_features.joblib"

@@ -1,7 +1,11 @@
 README.md
 pyproject.toml
-src/main.py
+src/axiom_mlops_project/__init__.py
+src/axiom_mlops_project/main.py
 src/axiom_mlops_project.egg-info/PKG-INFO
 src/axiom_mlops_project.egg-info/SOURCES.txt
 src/axiom_mlops_project.egg-info/dependency_links.txt
+src/axiom_mlops_project.egg-info/entry_points.txt
+src/axiom_mlops_project.egg-info/requires.txt
 src/axiom_mlops_project.egg-info/top_level.txt
+tests/test_main.py
