@@ -1,0 +1,6 @@
+2026-04-06 14:15:57.500 | DEBUG    | __main__:__init__:42 - FundingPredictor initialized with base_dir: /Users/ellenpeterson/Desktop/axiom_mlops_project
+2026-04-06 14:15:57.500 | INFO     | __main__:main:127 - --- 🏛️ Axiom MLOps OOP Engine ---
+2026-04-06 14:15:57.500 | INFO     | __main__:main:132 - 🟢 Model detected. Engine Online.
+2026-04-06 14:15:57.525 | DEBUG    | __main__:_load_model_assets:96 - Model assets loaded into memory.
+2026-04-06 14:15:57.563 | INFO     | __main__:predict:118 - Prediction generated for TRANSFER_P2P: SUCCESS (99.93%)
+2026-04-06 14:15:57.563 | SUCCESS  | __main__:main:134 - Health Check Completed: SUCCESS (99.93%)
