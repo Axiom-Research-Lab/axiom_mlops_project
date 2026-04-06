@@ -1,5 +1,5 @@
 # .pre-commit-config.yaml
-# Main configuration for the Axiom Engine Quality Gate
+# Axiom MLOps Project: Multi-Stage Quality Gate
 default_language_version:
   python: python3.13
 
@@ -27,7 +27,7 @@ repos:
       - id: ruff-format
 
   # 3. Security scanner (Bandit)
-  # NOTE: Bandit uses tags WITHOUT the 'v' prefix (e.g., 1.8.3 instead of v1.8.3)
+  # NOTE: Bandit uses tags WITHOUT the 'v' prefix
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3
     hooks:
@@ -35,9 +35,13 @@ repos:
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
 
-  # 4. Commit Message Standardization (Commitizen)
+  # 4. Commit Message & Branch Standardization (Commitizen)
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v4.2.2
     hooks:
+      # Validates the commit message format during 'commit-msg' stage
       - id: commitizen
         stages: [commit-msg]
+      # Validates the branch name during 'pre-push' stage
+      - id: commitizen-branch
+        stages: [pre-push]

@@ -1,0 +1,30 @@
+name: Check
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Environment Setup
+        uses: ./.github/actions/setup
+
+      - name: Sync Dependencies
+        run: uv sync --all-groups
+
+      - name: Run Quality Gate
+        # This triggers ruff, mypy, bandit, and pytest in the cloud!
+        run: uv run just check
