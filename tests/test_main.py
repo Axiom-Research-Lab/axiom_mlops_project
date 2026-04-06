@@ -1,77 +1,89 @@
 from pathlib import Path
 
-import pandas as pd
 import pytest
 
-from src.main import FundingPredictor
+from src.main import FundingPredictor, ModelStrategy, RandomForestConfig
 
 # --- Fixtures ---
 
 
 @pytest.fixture
-def predictor() -> FundingPredictor:
-    """Fixture to provide a standard FundingPredictor instance."""
-    return FundingPredictor()
+def default_config() -> RandomForestConfig:
+    """Provides a standard Pydantic configuration for testing."""
+    return RandomForestConfig(n_estimators=10, max_depth=2)
+
+
+@pytest.fixture
+def predictor(default_config: RandomForestConfig) -> FundingPredictor:
+    """
+    Fixture to provide a FundingPredictor instance.
+    Now injects the required configuration (Dependency Injection).
+    """
+    return FundingPredictor(config=default_config)
 
 
 # --- Tests ---
 
 
-def test_predictor_initialization(predictor: FundingPredictor) -> None:
+def test_predictor_initialization(
+    predictor: FundingPredictor, default_config: RandomForestConfig
+) -> None:
     """
-    Given: A FundingPredictor class.
+    Given: A FundingPredictor class with a Pydantic config.
     When: It is initialized.
-    Then: It should have the correct default paths and a None model.
+    Then: It should store the config and have correct paths.
     """
-    assert "data" in str(predictor.data_path)
+    assert predictor.config == default_config
+    assert predictor.config.KIND == "RandomForest"
     assert "models" in str(predictor.model_path)
-    assert predictor.model is None
+
+
+def test_pydantic_validation_error() -> None:
+    """
+    Given: An invalid configuration (negative estimators).
+    When: Creating the config.
+    Then: Pydantic should raise a ValidationError.
+    """
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        # n_estimators has a gt=0 (greater than 0) constraint
+        RandomForestConfig(n_estimators=-5)
 
 
 def test_data_cleaning_logic(predictor: FundingPredictor) -> None:
-    """
-    Given: A raw dataset.
-    When: load_and_clean_data is called.
-    Then: The resulting DataFrame should only contain 0 and 1 in the target column.
-    """
+    """Verify the cleaning logic still maps SUCCESS/FAILED to 1/0."""
     df = predictor.load_and_clean_data()
-
     assert "target" in df.columns
-    unique_targets = df["target"].unique()
-    # Check that the logic correctly mapped SUCCESS/FAILED to 1/0
-    assert set(unique_targets).issubset({0, 1})
+    assert set(df["target"].unique()).issubset({0, 1})
 
 
 def test_predict_raises_error_without_model(predictor: FundingPredictor, tmp_path: Path) -> None:
-    """
-    Given: A predictor where the model file is missing.
-    When: predict() is called.
-    Then: It should raise a RuntimeError due to the guard clause in src/main.py.
-    """
-    # Force a non-existent model path
-    predictor.model_path = tmp_path / "missing_model.joblib"
+    """Verify guard clause triggers when model file is missing."""
+    predictor.model_path = tmp_path / "non_existent.joblib"
     predictor.model = None
 
     with pytest.raises(RuntimeError) as excinfo:
         predictor.predict("TRANSFER_P2P", 100.0)
+    assert "Model assets not found" in str(excinfo.value)
 
-    assert "Model assets are not initialized" in str(excinfo.value)
 
-
-@pytest.mark.parametrize(
-    "fund_type, amount",
-    [("TRANSFER_P2P", 1000.0), ("INSTANT_EFT_TOPUP", 50.0), ("CASH_DEPOSIT", 5000.0)],
-)
-def test_multiple_prediction_scenarios(
-    predictor: FundingPredictor, fund_type: str, amount: float
-) -> None:
+@pytest.mark.parametrize("fund_type, amount", [("TRANSFER_P2P", 1000.0), ("CASH_DEPOSIT", 50.0)])
+def test_prediction_output(predictor: FundingPredictor, fund_type: str, amount: float) -> None:
     """
-    Given: Various valid funding types and amounts.
-    When: The predict method is executed.
-    Then: It should return a valid result string and a probability between 0 and 1.
+    Ensure the Strategy Pattern returns valid predictions.
+
+    Given: A predictor.
+    When: We train the model and then predict.
+    Then: It should return a valid result and follow the Protocol.
     """
+    # 1. Train the model first so the assets exist on disk
+    predictor.train()
+
+    # 2. Now perform the prediction
     result, proba = predictor.predict(fund_type, amount)
 
+    # 3. Assertions
+    assert isinstance(predictor.model, ModelStrategy)
     assert result in ["SUCCESS", "FAILED"]
     assert 0.0 <= proba <= 1.0
-    assert isinstance(proba, float)

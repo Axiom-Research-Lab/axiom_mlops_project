@@ -1,0 +1,43 @@
+# .pre-commit-config.yaml
+# Main configuration for the Axiom Engine Quality Gate
+default_language_version:
+  python: python3.13
+
+repos:
+  # 1. Standard Integrity Checks (File-level safety)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+
+  # 2. Ultra-fast Python linter and formatter (Ruff)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.9
+    hooks:
+      - id: ruff
+        args: [ --fix ]
+      - id: ruff-format
+
+  # 3. Security scanner (Bandit)
+  # NOTE: Bandit uses tags WITHOUT the 'v' prefix (e.g., 1.8.3 instead of v1.8.3)
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.3
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml"]
+        additional_dependencies: ["bandit[toml]"]
+
+  # 4. Commit Message Standardization (Commitizen)
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.2.2
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]

@@ -4,3 +4,27 @@
 2026-04-06 14:15:57.525 | DEBUG    | __main__:_load_model_assets:96 - Model assets loaded into memory.
 2026-04-06 14:15:57.563 | INFO     | __main__:predict:118 - Prediction generated for TRANSFER_P2P: SUCCESS (99.93%)
 2026-04-06 14:15:57.563 | SUCCESS  | __main__:main:134 - Health Check Completed: SUCCESS (99.93%)
+2026-04-06 16:41:33.579 | INFO     | __main__:main:169 - --- Axiom Engine: Online ---
+2026-04-06 16:41:33.587 | INFO     | __main__:predict:153 - Inference: SUCCESS (Conf: 90.33%)
+2026-04-06 16:42:02.097 | CRITICAL | src.main:predict:131 - Prediction failed: Model assets not found on disk.
+2026-04-06 16:42:02.109 | INFO     | src.main:train:110 - 🚀 Triggering Training Pipeline [Strategy: RandomForest]
+2026-04-06 16:42:03.924 | DEBUG    | src.main:_model_factory:80 - Factory creating model type: RandomForest
+2026-04-06 16:42:06.130 | SUCCESS  | src.main:train:125 - Model Strategy successfully trained and saved.
+2026-04-06 16:42:06.172 | INFO     | src.main:predict:153 - Inference: SUCCESS (Conf: 90.33%)
+2026-04-06 16:42:06.189 | INFO     | src.main:train:110 - 🚀 Triggering Training Pipeline [Strategy: RandomForest]
+2026-04-06 16:42:08.191 | DEBUG    | src.main:_model_factory:80 - Factory creating model type: RandomForest
+2026-04-06 16:42:10.497 | SUCCESS  | src.main:train:125 - Model Strategy successfully trained and saved.
+2026-04-06 16:42:10.548 | WARNING  | src.main:predict:147 - Unseen category 'CASH_DEPOSIT' - proceeding with baseline.
+2026-04-06 16:42:10.549 | INFO     | src.main:predict:153 - Inference: SUCCESS (Conf: 87.06%)
+2026-04-06 17:03:15.019 | INFO     | src.main:train:92 - 🚀 Training Pipeline Start [Strategy: RandomForest]
+2026-04-06 17:03:19.182 | SUCCESS  | src.main:train:104 - Model Strategy successfully trained and saved.
+2026-04-06 17:03:19.228 | INFO     | src.main:predict:127 - Inference: SUCCESS (Conf: 90.33%)
+2026-04-06 17:03:19.237 | INFO     | src.main:train:92 - 🚀 Training Pipeline Start [Strategy: RandomForest]
+2026-04-06 17:03:23.369 | SUCCESS  | src.main:train:104 - Model Strategy successfully trained and saved.
+2026-04-06 17:03:23.425 | INFO     | src.main:predict:127 - Inference: SUCCESS (Conf: 87.06%)
+2026-04-06 17:06:42.190 | INFO     | src.main:train:92 - 🚀 Training Pipeline Start [Strategy: RandomForest]
+2026-04-06 17:06:46.248 | SUCCESS  | src.main:train:104 - Model Strategy successfully trained and saved.
+2026-04-06 17:06:46.292 | INFO     | src.main:predict:127 - Inference: SUCCESS (Conf: 90.33%)
+2026-04-06 17:06:46.340 | INFO     | src.main:train:92 - 🚀 Training Pipeline Start [Strategy: RandomForest]
+2026-04-06 17:06:50.387 | SUCCESS  | src.main:train:104 - Model Strategy successfully trained and saved.
+2026-04-06 17:06:50.448 | INFO     | src.main:predict:127 - Inference: SUCCESS (Conf: 87.06%)
