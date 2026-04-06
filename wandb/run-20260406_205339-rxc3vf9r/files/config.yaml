@@ -1,0 +1,52 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            20dgb9cw9fwebkgy1ivdmxck8dy5sv3g:
+                apple: {}
+                codePath: src/axiom_mlops_project/main.py
+                codePathLocal: src/axiom_mlops_project/main.py
+                cpu_count: 8
+                cpu_count_logical: 8
+                disk:
+                    /:
+                        total: "494384795648"
+                        used: "271401193472"
+                email: shailoh@axiomresearchlab.io
+                executable: /Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/bin/python3
+                git:
+                    commit: 99a06be507cb961e8312cf99c28b612fcd357066
+                    remote: https://github.com/shailoh-a11y/axiom_mlops_project.git
+                host: m-TalentCru-EllP.local
+                memory:
+                    total: "17179869184"
+                os: macOS-26.4-arm64-arm-64bit-Mach-O
+                program: /Users/ellenpeterson/Desktop/axiom_mlops_project/src/axiom_mlops_project/main.py
+                python: CPython 3.13.12
+                root: /Users/ellenpeterson/Desktop/axiom_mlops_project
+                startedAt: "2026-04-06T18:53:39.736858Z"
+                writerId: 20dgb9cw9fwebkgy1ivdmxck8dy5sv3g
+        m: []
+        python_version: 3.13.12
+        t:
+            "1":
+                - 5
+                - 53
+            "2":
+                - 5
+                - 53
+            "3":
+                - 13
+                - 16
+            "4": 3.13.12
+            "5": 0.25.1
+            "12": 0.25.1
+            "13": darwin-arm64
+KIND:
+    value: RandomForest
+max_depth:
+    value: 8
+n_estimators:
+    value: 200
+random_state:
+    value: 42

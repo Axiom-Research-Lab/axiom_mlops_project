@@ -1,0 +1,47 @@
+[32m2026-04-06 20:53:43.895[0m | [1mINFO    [0m | [36m__main__[0m:[36mtrain[0m:[36m139[0m - [1m🚀 Training Pipeline Start [Strategy: RandomForest][0m
+Traceback (most recent call last):
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/src/axiom_mlops_project/main.py", line 199, in <module>
+    main()
+    ~~~~^^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/src/axiom_mlops_project/main.py", line 194, in main
+    predictor.train()
+    ~~~~~~~~~~~~~~~^^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/src/axiom_mlops_project/main.py", line 147, in train
+    self.model.fit(X, y)
+    ~~~~~~~~~~~~~~^^^^^^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/sklearn/base.py", line 1336, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/sklearn/ensemble/_forest.py", line 486, in fit
+    trees = Parallel(
+    ...<2 lines>...
+        prefer="threads",
+    )(
+        delayed(_parallel_build_trees)(
+    ...<12 lines>...
+        for i, t in enumerate(trees)
+    )
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/sklearn/utils/parallel.py", line 91, in __call__
+    return super().__call__(iterable_with_config_and_warning_filters)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/joblib/parallel.py", line 1986, in __call__
+    return output if self.return_generator else list(output)
+                                                ~~~~^^^^^^^^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/joblib/parallel.py", line 1914, in _get_sequential_output
+    res = func(*args, **kwargs)
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/sklearn/utils/parallel.py", line 184, in __call__
+    return self.function(*args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/sklearn/ensemble/_forest.py", line 188, in _parallel_build_trees
+    tree._fit(
+    ~~~~~~~~~^
+        X,
+        ^^
+    ...<3 lines>...
+        missing_values_in_feature_mask=missing_values_in_feature_mask,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/ellenpeterson/Desktop/axiom_mlops_project/.venv/lib/python3.13/site-packages/sklearn/tree/_classes.py", line 475, in _fit
+    builder.build(self.tree_, X, y, sample_weight, missing_values_in_feature_mask)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
