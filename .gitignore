@@ -17,3 +17,7 @@ models/*
 
 # OS specific
 .DS_Store
+
+# Ignore local wandb logs and downloaded artifacts
+wandb/
+artifacts/
