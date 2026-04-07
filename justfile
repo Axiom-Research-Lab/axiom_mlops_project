@@ -22,3 +22,5 @@ package-build constraints="constraints.txt": package-constraints
 clean-build:
     rm -rf dist/ build/ *.egg-info
     rm -f constraints.txt
+monitor:
+    python src/axiom_mlops_project/jobs/monitoring.py
