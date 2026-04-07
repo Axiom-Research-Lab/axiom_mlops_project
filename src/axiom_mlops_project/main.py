@@ -2,7 +2,7 @@
 Axiom MLOps Project: Funding Prediction Engine.
 
 This module implements a professional machine learning pipeline using the
-Strategy Pattern for model selection and Weights & Biases for experiment tracking.
+Strategy Pattern for model selection and Weights & Biases for Model Registry management.
 """
 
 import sys
@@ -11,11 +11,12 @@ from typing import List, Literal, Optional, Protocol, Tuple, Union, runtime_chec
 
 import joblib
 import pandas as pd
-import wandb
 from loguru import logger
 from pydantic import BaseModel, Field
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+
+import wandb
 
 # --- Configuration Patterns ---
 
@@ -45,9 +46,6 @@ ModelConfig = Union[RandomForestConfig, SVMConfig]
 class ModelStrategy(Protocol):
     """
     Protocol defining the interface for all model strategies.
-
-    Ensures compatibility across different sklearn estimators within
-    the Strategy Pattern.
     """
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> None: ...
@@ -59,22 +57,11 @@ class ModelStrategy(Protocol):
 
 class FundingPredictor:
     """
-    MLOps engine for predicting funding success.
-
-    Attributes:
-        config (ModelConfig): Validated configuration for the chosen model.
-        base_dir (Path): Resolved project root directory.
-        data_path (Path): Path to the input CSV data.
-        model_path (Path): Path to the serialized model file.
+    MLOps engine for predicting funding success with Registry Support.
     """
 
     def __init__(self, config: ModelConfig = RandomForestConfig()) -> None:
-        """
-        Initializes the predictor with directory resolution and logging.
-
-        Args:
-            config: Configuration object (RandomForest or SVM).
-        """
+        """Initializes the predictor with directory resolution."""
         self.base_dir = Path(__file__).resolve().parents[2]
         if Path("/app/data").exists():
             self.base_dir = Path("/app")
@@ -91,12 +78,7 @@ class FundingPredictor:
         logger.add(sys.stderr, level="INFO")
 
     def _model_factory(self) -> ModelStrategy:
-        """
-        Factory method to instantiate the model based on configuration.
-
-        Returns:
-            An instantiated sklearn classifier matching ModelStrategy.
-        """
+        """Instantiate the model based on configuration."""
         if isinstance(self.config, RandomForestConfig):
             return RandomForestClassifier(
                 n_estimators=self.config.n_estimators,
@@ -108,12 +90,7 @@ class FundingPredictor:
         raise NotImplementedError(f"Strategy {self.config.KIND} is not implemented.")
 
     def load_and_clean_data(self) -> pd.DataFrame:
-        """
-        Loads raw data and prepares it for training.
-
-        Returns:
-            pd.DataFrame: Cleaned data containing only valid target statuses.
-        """
+        """Loads and prepares raw data."""
         df = pd.read_csv(self.data_path)
         df_clean = df[df["fund_order_status"].isin(["SUCCESS", "FAILED"])].copy()
         df_clean["target"] = (df_clean["fund_order_status"] == "SUCCESS").astype(int)
@@ -121,19 +98,13 @@ class FundingPredictor:
 
     def train(self) -> None:
         """
-        Executes the full training pipeline and logs results to Weights & Biases.
-
-        Steps:
-            1. Initialize W&B run.
-            2. Load/Clean data.
-            3. Feature engineering (one-hot encoding).
-            4. Model fitting.
-            5. Artifact serialization and W&B logging.
+        Trains and registers the model in the W&B Model Registry.
         """
-        wandb.init(
+        run = wandb.init(
             project="axiom-mlops-project",
             config=self.config.model_dump(),
             name=f"train-{self.config.KIND}",
+            job_type="train",
         )
 
         logger.info("🚀 Training Pipeline Start [Strategy: {}]", self.config.KIND)
@@ -146,33 +117,51 @@ class FundingPredictor:
         self.model = self._model_factory()
         self.model.fit(X, y)
 
-        wandb.log({"feature_count": len(self.feature_names)})
-
+        # 1. Save locally
         self.model_path.parent.mkdir(exist_ok=True)
         joblib.dump(self.model, self.model_path)
         joblib.dump(self.feature_names, self.features_path)
 
-        wandb.save(str(self.model_path))
+        # 2. Register as an Artifact (The Model Registry part)
+        model_artifact = wandb.Artifact(
+            name="funding-model",
+            type="model",
+            description=f"Axiom core {self.config.KIND} model",
+            metadata={**self.config.model_dump(), "feature_names": self.feature_names},
+        )
+        model_artifact.add_file(str(self.model_path))
+        model_artifact.add_file(str(self.features_path))
 
-        logger.success("Model trained successfully and tracked in W&B.")
+        # 3. Log to registry
+        run.log_artifact(model_artifact)
+
+        logger.success("Model trained and registered to W&B successfully.")
         wandb.finish()
 
+    def load_champion(self, alias: str = "champion") -> None:
+        """
+        Downloads and loads the model version tagged with the given alias.
+        Fulfills the 'Loading from Registry' requirement of Section 5.6.
+        """
+        run = wandb.init(project="axiom-mlops-project", job_type="inference")
+
+        logger.info("Fetching model with alias: '{}' from registry...", alias)
+        artifact = run.use_artifact(f"funding-model:{alias}", type="model")
+        artifact_dir = Path(artifact.download())
+
+        self.model = joblib.load(artifact_dir / "funding_model.joblib")
+        self.feature_names = joblib.load(artifact_dir / "model_features.joblib")
+
+        logger.success("Champion model loaded from registry.")
+        run.finish()
+
     def predict(self, fund_type: str, amount: float) -> Tuple[str, float]:
-        """
-        Performs inference on a single funding request.
-
-        Args:
-            fund_type: The type of funding (e.g., 'TRANSFER_P2P').
-            amount: The monetary value of the request.
-
-        Returns:
-            Tuple[str, float]: (Result string 'SUCCESS'/'FAILED', Confidence probability).
-        """
+        """Performs inference on a single funding request."""
         if self.model is None:
+            logger.warning("No model in memory. Loading local fallback...")
             self.model = joblib.load(self.model_path)
             self.feature_names = joblib.load(self.features_path)
 
-        # Prepare input vector
         input_df = pd.DataFrame(0, index=[0], columns=self.feature_names)
         input_df["fund_amount"] = amount
         col_name = f"fund_type_{fund_type}"
@@ -188,11 +177,20 @@ class FundingPredictor:
 
 
 def main() -> None:
-    """Entry point for the Axiom Engine training and inference CLI."""
-    config = RandomForestConfig(n_estimators=200, max_depth=8)
+    """Entry point for training and registry testing."""
+    # 1. Train and Register a new version
+    config = RandomForestConfig(n_estimators=150, max_depth=6)
     predictor = FundingPredictor(config=config)
     predictor.train()
-    predictor.predict("TRANSFER_P2P", 1250.0)
+
+    # 2. Demonstrate Registry Loading
+    # Note: This will fail until you manually tag a version as 'champion' in W&B UI
+    # or via the API script I gave you earlier.
+    try:
+        predictor.load_champion(alias="latest")  # Using 'latest' as a safe default
+        predictor.predict("TRANSFER_P2P", 1500.0)
+    except Exception as e:
+        logger.error("Could not load from registry: {}", e)
 
 
 if __name__ == "__main__":
