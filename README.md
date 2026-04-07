@@ -91,3 +91,12 @@ This project is governed by **Axiom Research Lab**.
 
 * **Branch Protection:** Changes must pass through Pull Requests on `main`.
 * **License:** Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 💻 Cloud Workstations & Collaboration
+This project is optimized for **GitHub Codespaces** to ensure a standardized Axiom Research environment.
+
+* **Instant Setup:** Click the **Code** button on GitHub and select **Create codespace on main**.
+* **Pre-configured:** The `.devcontainer` automatically installs `uv`, Python 3.13, and essential VS Code extensions (Ruff, W&B).
+* **Collaboration:** Use **VS Code Live Share** within the workstation for real-time pair programming and shared terminal debugging on the VodaPay funding model.
