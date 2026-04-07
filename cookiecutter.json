@@ -1,0 +1,10 @@
+{
+    "author_name": "Axiom Research Lab",
+    "project_name": "VodaPay Model",
+    "repository_name": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "description": "A production-ready MLOps pipeline.",
+    "python_version": "3.13",
+    "tracking_tool": ["Weights & Biases", "MLflow"],
+    "license": "MIT",
+    "version": "0.1.0"
+}
