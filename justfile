@@ -1,22 +1,24 @@
-# Main configuration file for Just.
-set dotenv-load := true # Automatically load environment variables
+# Axiom MLOps Project: Strategy Runner
 
-# VARIABLES: Define global constants
-SOURCES := "src"
-TESTS := "tests"
+# Run the full training pipeline
+train:
+    python src/axiom_mlops_project/main.py
 
-# DEFAULTS: Display a list of available tasks.
-default:
-    @just --list
+# --- Section 7.0: Reproducibility & Deterministic Packaging ---
 
-# IMPORTS: Modularize tasks
-import 'tasks/check.just'
+# 1. Generate dependency constraints with hashes
+# This now includes 'setuptools' and 'wheel' because we added them as build-deps.
+package-constraints constraints="constraints.txt":
+    uv pip compile pyproject.toml --generate-hashes --output-file={{constraints}}
 
-# PROJECT TASKS
-run:
-    uv run src/main.py
+# 2. Build a deterministic, hash-verified python wheel
+# We use the verified environment to ensure bit-for-bit identity.
+[group('package')]
+package-build constraints="constraints.txt": package-constraints
+    uv build --build-constraint={{constraints}} --require-hashes --wheel
 
-clean:
-    rm -rf .pytest_cache .mypy_cache .ruff_cache
-    rm -f axiom_engine.log
-    rm -f models/*.joblib
+# 3. Clean up build artifacts
+[group('package')]
+clean-build:
+    rm -rf dist/ build/ *.egg-info
+    rm -f constraints.txt
