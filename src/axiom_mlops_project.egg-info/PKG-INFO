@@ -7,6 +7,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: annotated-types==0.7.0
 Requires-Dist: evidently==0.4.32
+Requires-Dist: fastapi>=0.135.3
 Requires-Dist: loguru>=0.7.3
 Requires-Dist: matplotlib>=3.10.8
 Requires-Dist: mypy>=1.20.0
@@ -24,6 +25,7 @@ Requires-Dist: scikit-learn>=1.8.0
 Requires-Dist: seaborn>=0.13.2
 Requires-Dist: setuptools>=82.0.1
 Requires-Dist: shap
+Requires-Dist: uvicorn>=0.44.0
 Requires-Dist: wandb>=0.25.1
 Requires-Dist: wheel>=0.46.3
 Dynamic: license-file
