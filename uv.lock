@@ -179,6 +179,7 @@ source = { editable = "." }
 dependencies = [
     { name = "annotated-types" },
     { name = "evidently" },
+    { name = "fastapi" },
     { name = "loguru" },
     { name = "matplotlib" },
     { name = "mypy" },
@@ -196,6 +197,7 @@ dependencies = [
     { name = "seaborn" },
     { name = "setuptools" },
     { name = "shap" },
+    { name = "uvicorn" },
     { name = "wandb" },
     { name = "wheel" },
 ]
@@ -219,6 +221,7 @@ dev = [
 requires-dist = [
     { name = "annotated-types", specifier = "==0.7.0" },
     { name = "evidently", specifier = "==0.4.32" },
+    { name = "fastapi", specifier = ">=0.135.3" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "matplotlib", specifier = ">=3.10.8" },
     { name = "mypy", specifier = ">=1.20.0" },
@@ -236,6 +239,7 @@ requires-dist = [
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "setuptools", specifier = ">=82.0.1" },
     { name = "shap" },
+    { name = "uvicorn", specifier = ">=0.44.0" },
     { name = "wandb", specifier = ">=0.25.1" },
     { name = "wheel", specifier = ">=0.46.3" },
 ]
