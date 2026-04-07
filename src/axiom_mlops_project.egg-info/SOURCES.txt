@@ -1,3 +1,4 @@
+LICENSE
 README.md
 pyproject.toml
 src/axiom_mlops_project/__init__.py
@@ -9,3 +10,4 @@ src/axiom_mlops_project.egg-info/entry_points.txt
 src/axiom_mlops_project.egg-info/requires.txt
 src/axiom_mlops_project.egg-info/top_level.txt
 tests/test_main.py
+tests/test_template.py
