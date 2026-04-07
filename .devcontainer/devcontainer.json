@@ -1,0 +1,21 @@
+{
+    "name": "Axiom Lab Workstation",
+    "image": "mcr.microsoft.com/devcontainers/python:3.13",
+    "features": {
+        "ghcr.io/astral-sh/uv/install-uv:1": {}
+    },
+    "containerEnv": {
+        "WANDB_PROJECT": "axiom-funding-prediction"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "charliermarsh.ruff",
+                "ms-python.python",
+                "tamasfe.even-better-toml",
+                "wandb.wandb-vscode"
+            ]
+        }
+    },
+    "postCreateCommand": "uv sync"
+}
