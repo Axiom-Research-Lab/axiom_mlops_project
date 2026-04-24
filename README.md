@@ -60,7 +60,7 @@ Ensure you have **uv** installed.
 ### 1. Real-Time Inference (FastAPI)
 To launch the VodaPay prediction service for live testing:
 ```bash
-uv run uvicorn axiom_mlops_project.api:app --reload
+uv run uvicorn src.axiom_mlops_project.api:app --reload --reload-dir src
 ```
 **Interactive Documentation:** Once running, access the Swagger UI (`/docs`) to test Instant EFT payloads in real-time.
 
