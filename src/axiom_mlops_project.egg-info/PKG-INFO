@@ -31,7 +31,19 @@ Requires-Dist: wheel>=0.46.3
 Requires-Dist: gradio>=4.0.0
 Dynamic: license-file
 
-# 👾 Axiom MLOps: VodaPay Instant EFT Engine
+---
+title: Instant EFT Predictor
+emoji: 👾
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+sdk_version: 6.13.0
+app_file: app.py
+pinned: false
+---
+
+# VodaPay Instant EFT Engine
+
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)
