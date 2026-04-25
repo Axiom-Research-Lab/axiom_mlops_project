@@ -80,7 +80,7 @@ Current baseline metrics for the Instant EFT Predictor:
 
 | Metric | Value |
 | :--- | :--- |
-| **API Latency** | < 15ms |
+| **API Latency** | < 45ms |
 | **Integrity Hash** | Verified |
 | **Model** | Random Forest / FastAPI |
 
