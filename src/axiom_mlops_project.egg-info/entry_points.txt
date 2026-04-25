@@ -1,2 +1,3 @@
 [console_scripts]
+axiom-interface = axiom_mlops_project.interface:launch_interface
 axiom-mlops = axiom_mlops_project.main:main

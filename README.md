@@ -1,19 +1,16 @@
 ---
-title: Eft Predictor
-emoji: 🐠
-colorFrom: green
-colorTo: yellow
+title: Instant EFT Predictor
+emoji: 👾
+colorFrom: blue
+colorTo: indigo
 sdk: gradio
 sdk_version: 6.13.0
 app_file: app.py
 pinned: false
-license: mit
-short_description: A production-ready machine learning pipeline.
 ---
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
-
 # VodaPay Instant EFT Engine
+
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Python 3.13+](https://img.shields.io/badge/python-3.13+-blue.svg)
@@ -64,7 +61,14 @@ uv run uvicorn src.axiom_mlops_project.api:app --reload --reload-dir src
 ```
 **Interactive Documentation:** Once running, access the Swagger UI (`/docs`) to test Instant EFT payloads in real-time.
 
-### 2. Lineage & Audit Tracking
+### 2. Interactive GUI (Gradio)
+For a more user-friendly testing experience:
+```bash
+uv run axiom-interface
+```
+This launches a web-based dashboard where you can simulate transactions and see immediate results.
+
+### 3. Lineage & Audit Tracking
 To execute the data lineage pipeline and generate cloud-hosted audit artifacts:
 ```bash
 uv run python -m axiom_mlops_project.lineage

@@ -28,6 +28,7 @@ dependencies = [
     "uvicorn>=0.44.0",
     "wandb>=0.25.1",
     "wheel>=0.46.3",
+    "gradio>=4.0.0",
 ]
 
 [dependency-groups]
@@ -63,6 +64,7 @@ convention = "google"
 [project.scripts]
 # This creates the terminal command "axiom-mlops"
 axiom-mlops = "axiom_mlops_project.main:main"
+axiom-interface = "axiom_mlops_project.interface:launch_interface"
 
 [tool.setuptools.packages.find]
 # This tells Python to look inside the "src" folder for your code
